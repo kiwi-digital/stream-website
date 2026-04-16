@@ -10,7 +10,13 @@ import { testimonials } from "../data/testimonials";
     </h2>
   </div>
 
-  <div class="mt-12 flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4 sm:grid sm:grid-cols-1 sm:overflow-visible lg:grid-cols-3" role="region" aria-roledescription="carousel" aria-label="Client testimonials">
+  <div
+    class="mt-12 flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4 sm:grid sm:grid-cols-1 sm:overflow-visible lg:grid-cols-3"
+    role="region"
+    aria-roledescription="carousel"
+    aria-label="Client testimonials"
+    data-testimonial-container
+  >
     {testimonials.map((t, i) => (
       <article
         class="relative min-w-[85vw] shrink-0 snap-center rounded-2xl border border-border bg-surface/50 p-8 sm:min-w-0"
@@ -36,4 +42,94 @@ import { testimonials } from "../data/testimonials";
       </article>
     ))}
   </div>
+
+  <!-- Navigation -->
+  <div class="mt-8 flex items-center justify-between sm:justify-center sm:gap-8">
+    <div class="flex items-center gap-3">
+      {testimonials.map((_, i) => (
+        <button
+          class="group relative py-4"
+          data-testimonial-dot={i}
+          aria-label={`Go to testimonial ${i + 1}`}
+        >
+          <span
+            class:list={[
+              "block h-px transition-all duration-500 ease-out",
+              i === 0
+                ? "w-12 bg-text-primary"
+                : "w-6 bg-text-primary/20 group-hover:w-8 group-hover:bg-text-primary/40",
+            ]}
+          />
+        </button>
+      ))}
+    </div>
+    <span class="text-xs text-text-secondary tracking-widest uppercase" data-testimonial-counter>
+      01 / {String(testimonials.length).padStart(2, "0")}
+    </span>
+    <div class="flex items-center gap-1">
+      <button
+        class="p-2 rounded-full text-text-primary/40 hover:text-text-primary hover:bg-text-primary/5 transition-all duration-300"
+        data-testimonial-prev
+        aria-label="Previous testimonial"
+      >
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
+      <button
+        class="p-2 rounded-full text-text-primary/40 hover:text-text-primary hover:bg-text-primary/5 transition-all duration-300"
+        data-testimonial-next
+        aria-label="Next testimonial"
+      >
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+    </div>
+  </div>
 </section>
+
+<script>
+document.addEventListener("astro:page-load", () => {
+  const container = document.querySelector("[data-testimonial-container]") as HTMLElement | null;
+  const dots = document.querySelectorAll("[data-testimonial-dot]");
+  const counter = document.querySelector("[data-testimonial-counter]") as HTMLElement | null;
+  const prevBtn = document.querySelector("[data-testimonial-prev]");
+  const nextBtn = document.querySelector("[data-testimonial-next]");
+
+  if (!container || !counter) return;
+
+  const cards = container.querySelectorAll("article");
+  const total = cards.length;
+  let active = 0;
+
+  function goTo(index: number) {
+    active = ((index % total) + total) % total;
+    cards[active].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+
+    dots.forEach((dot, i) => {
+      const line = dot.querySelector("span");
+      if (!line) return;
+      if (i === active) {
+        line.className = "block h-px transition-all duration-500 ease-out w-12 bg-text-primary";
+      } else {
+        line.className = "block h-px transition-all duration-500 ease-out w-6 bg-text-primary/20 group-hover:w-8 group-hover:bg-text-primary/40";
+      }
+    });
+
+    counter.textContent = `${String(active + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}`;
+  }
+
+  prevBtn?.addEventListener("click", () => goTo(active - 1));
+  nextBtn?.addEventListener("click", () => goTo(active + 1));
+  dots.forEach((dot) => {
+    dot.addEventListener("click", () => {
+      const i = Number((dot as HTMLElement).dataset.testimonialDot);
+      goTo(i);
+    });
+  });
+
+  // Keyboard navigation
+  container.setAttribute("tabindex", "0");
+  container.addEventListener("keydown", (e: KeyboardEvent) => {
+    if (e.key === "ArrowRight") { e.preventDefault(); goTo(active + 1); }
+    if (e.key === "ArrowLeft") { e.preventDefault(); goTo(active - 1); }
+  });
+});
+</script>

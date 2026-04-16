@@ -8,16 +8,18 @@
         Full Name <span class="text-destructive">*</span>
       </label>
       <input type="text" id="name" name="name" required autocomplete="name"
-        class="mt-2 block w-full rounded-lg border border-border bg-surface-elevated px-4 py-3 text-sm text-text-primary placeholder-text-secondary/50 transition-colors focus:border-accent focus:outline-none"
+        class="mt-2 block w-full rounded-lg border border-border bg-surface-elevated px-4 py-3 text-sm text-text-primary placeholder-text-secondary/50 transition-colors focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-surface-elevated"
         placeholder="Your full name" />
+      <p class="mt-1 hidden text-xs text-destructive" data-error="name">This field is required</p>
     </div>
     <div>
       <label for="email" class="block text-sm font-medium text-text-primary">
         Email <span class="text-destructive">*</span>
       </label>
       <input type="email" id="email" name="email" required autocomplete="email"
-        class="mt-2 block w-full rounded-lg border border-border bg-surface-elevated px-4 py-3 text-sm text-text-primary placeholder-text-secondary/50 transition-colors focus:border-accent focus:outline-none"
+        class="mt-2 block w-full rounded-lg border border-border bg-surface-elevated px-4 py-3 text-sm text-text-primary placeholder-text-secondary/50 transition-colors focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-surface-elevated"
         placeholder="you@example.com" />
+      <p class="mt-1 hidden text-xs text-destructive" data-error="email">Please enter a valid email address</p>
     </div>
   </div>
 
@@ -25,7 +27,7 @@
     <div>
       <label for="phone" class="block text-sm font-medium text-text-primary">Phone</label>
       <input type="tel" id="phone" name="phone" autocomplete="tel"
-        class="mt-2 block w-full rounded-lg border border-border bg-surface-elevated px-4 py-3 text-sm text-text-primary placeholder-text-secondary/50 transition-colors focus:border-accent focus:outline-none"
+        class="mt-2 block w-full rounded-lg border border-border bg-surface-elevated px-4 py-3 text-sm text-text-primary placeholder-text-secondary/50 transition-colors focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-surface-elevated"
         placeholder="022 123 4567" />
     </div>
     <div>
@@ -33,7 +35,7 @@
         Event Type <span class="text-destructive">*</span>
       </label>
       <select id="event-type" name="event_type" required
-        class="mt-2 block w-full rounded-lg border border-border bg-surface-elevated px-4 py-3 text-sm text-text-primary transition-colors focus:border-accent focus:outline-none">
+        class="mt-2 block w-full rounded-lg border border-border bg-surface-elevated px-4 py-3 text-sm text-text-primary transition-colors focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-surface-elevated">
         <option value="" disabled selected>Select event type</option>
         <option value="funeral">Funeral</option>
         <option value="wedding">Wedding</option>
@@ -41,6 +43,7 @@
         <option value="church">Church Service</option>
         <option value="other">Other</option>
       </select>
+      <p class="mt-1 hidden text-xs text-destructive" data-error="event_type">This field is required</p>
     </div>
   </div>
 
@@ -48,12 +51,12 @@
     <div>
       <label for="event-date" class="block text-sm font-medium text-text-primary">Event Date</label>
       <input type="date" id="event-date" name="event_date"
-        class="mt-2 block w-full rounded-lg border border-border bg-surface-elevated px-4 py-3 text-sm text-text-primary transition-colors focus:border-accent focus:outline-none" />
+        class="mt-2 block w-full rounded-lg border border-border bg-surface-elevated px-4 py-3 text-sm text-text-primary transition-colors focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-surface-elevated" />
     </div>
     <div>
       <label for="venue" class="block text-sm font-medium text-text-primary">Venue / Location</label>
       <input type="text" id="venue" name="venue"
-        class="mt-2 block w-full rounded-lg border border-border bg-surface-elevated px-4 py-3 text-sm text-text-primary placeholder-text-secondary/50 transition-colors focus:border-accent focus:outline-none"
+        class="mt-2 block w-full rounded-lg border border-border bg-surface-elevated px-4 py-3 text-sm text-text-primary placeholder-text-secondary/50 transition-colors focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-surface-elevated"
         placeholder="Venue name or address" />
     </div>
   </div>
@@ -76,7 +79,7 @@
   <div>
     <label for="details" class="block text-sm font-medium text-text-primary">Additional Details</label>
     <textarea id="details" name="details" rows="4"
-      class="mt-2 block w-full resize-none rounded-lg border border-border bg-surface-elevated px-4 py-3 text-sm text-text-primary placeholder-text-secondary/50 transition-colors focus:border-accent focus:outline-none"
+      class="mt-2 block w-full resize-none rounded-lg border border-border bg-surface-elevated px-4 py-3 text-sm text-text-primary placeholder-text-secondary/50 transition-colors focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-surface-elevated"
       placeholder="Tell us a bit about your event..."></textarea>
   </div>
 
@@ -96,11 +99,34 @@
     const success = document.getElementById("form-success");
     if (!form || !success) return;
 
+    // Inline validation on blur
+    const requiredFields = form.querySelectorAll("[required]");
+    requiredFields.forEach((field) => {
+      field.addEventListener("blur", () => {
+        const el = field as HTMLInputElement | HTMLSelectElement;
+        const errorEl = el.closest("div, fieldset")?.querySelector(`[data-error="${el.name || el.id}"]`) as HTMLElement | null;
+        if (!errorEl) return;
+
+        let isValid = el.value.trim() !== "";
+        if (el.type === "email" && isValid) {
+          isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value);
+        }
+
+        if (!isValid) {
+          errorEl.classList.remove("hidden");
+          el.classList.add("border-destructive");
+        } else {
+          errorEl.classList.add("hidden");
+          el.classList.remove("border-destructive");
+        }
+      });
+    });
+
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const btn = form.querySelector("button[type=submit]") as HTMLButtonElement;
       btn.disabled = true;
-      btn.textContent = "Sending...";
+      btn.innerHTML = '<svg class="inline h-4 w-4 animate-spin mr-2" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg> Sending...';
 
       try {
         const res = await fetch(form.action, {
@@ -112,7 +138,7 @@
         if (res.ok) {
           form.reset();
           success.classList.remove("hidden");
-          btn.textContent = "Sent!";
+          btn.innerHTML = '<svg class="inline h-4 w-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> Sent!';
         } else {
           btn.textContent = "Something went wrong. Try again.";
           btn.disabled = false;

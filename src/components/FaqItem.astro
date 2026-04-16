@@ -9,7 +9,8 @@ const buttonId = `faq-btn-${id}`;
 const panelId = `faq-panel-${id}`;
 ---
 
-<div class="group rounded-2xl border border-border bg-surface/50 backdrop-blur-xl transition-all duration-200 hover:-translate-y-0.5">
+<div class="group relative overflow-hidden rounded-2xl border border-border bg-surface/50 backdrop-blur-xl transition-all duration-200 hover:-translate-y-0.5" data-faq-card>
+  <div class="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100" style="background: radial-gradient(200px circle at var(--faq-x, 50%) var(--faq-y, 50%), rgba(14,165,233,0.06), transparent 60%);"></div>
   <button
     type="button"
     id={buttonId}
@@ -38,3 +39,16 @@ const panelId = `faq-panel-${id}`;
     </p>
   </div>
 </div>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    document.querySelectorAll("[data-faq-card]").forEach((card) => {
+      card.addEventListener("mousemove", (e: Event) => {
+        const event = e as MouseEvent;
+        const rect = (card as HTMLElement).getBoundingClientRect();
+        (card as HTMLElement).style.setProperty("--faq-x", `${event.clientX - rect.left}px`);
+        (card as HTMLElement).style.setProperty("--faq-y", `${event.clientY - rect.top}px`);
+      });
+    });
+  });
+</script>

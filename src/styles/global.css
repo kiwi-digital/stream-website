@@ -56,3 +56,31 @@
 .animate-fade-in-up {
   animation: fade-in-up 400ms ease-out forwards;
 }
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 400ms ease-out, transform 400ms ease-out;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.stagger-grid > * {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 400ms ease-out, transform 400ms ease-out;
+}
+
+.stagger-grid.visible > *:nth-child(1) { transition-delay: 0ms; }
+.stagger-grid.visible > *:nth-child(2) { transition-delay: 50ms; }
+.stagger-grid.visible > *:nth-child(3) { transition-delay: 100ms; }
+.stagger-grid.visible > *:nth-child(4) { transition-delay: 150ms; }
+.stagger-grid.visible > *:nth-child(5) { transition-delay: 200ms; }
+
+.stagger-grid.visible > * {
+  opacity: 1;
+  transform: translateY(0);
+}

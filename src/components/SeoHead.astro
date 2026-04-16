@@ -8,7 +8,7 @@ interface Props {
 
 const { title, description, canonical, ogImage } = Astro.props;
 const canonicalUrl = canonical || Astro.url.href;
-const ogImageUrl = ogImage || "/images/og-default.jpg";
+const ogImageUrl = ogImage || "/images/og-default.svg";
 ---
 
 <title>{title}</title>

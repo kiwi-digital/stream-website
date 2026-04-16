@@ -23,14 +23,14 @@ const audiences = [
   <Hero />
 
   <!-- Services Grid -->
-  <section id="services" class="mx-auto max-w-6xl px-6 py-24">
+  <section id="services" class="reveal mx-auto max-w-6xl px-6 py-24">
     <div class="text-center">
       <p class="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Our Services</p>
       <h2 class="mt-3 text-3xl font-semibold tracking-tight text-text-primary sm:text-4xl">
         Everything you need for a seamless event
       </h2>
     </div>
-    <div class="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="reveal stagger-grid mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {services.map((service) => (
         <ServiceCard
           title={service.shortTitle}
@@ -43,7 +43,7 @@ const audiences = [
   </section>
 
   <!-- Who We Work With -->
-  <section class="mx-auto max-w-4xl px-6 py-24">
+  <section class="reveal mx-auto max-w-4xl px-6 py-24">
     <div class="text-center">
       <p class="text-xs font-semibold uppercase tracking-[0.2em] text-teal">Who We Work With</p>
       <h2 class="mt-3 text-3xl font-semibold tracking-tight text-text-primary sm:text-4xl">
@@ -79,4 +79,21 @@ const audiences = [
     "areaServed": "Hawkes Bay, New Zealand",
     "serviceType": ["Live Streaming", "Video Recording", "Sound PA Hire", "Projector Screen Hire", "Equipment Hire"]
   })} />
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+  });
+</script>
 </BaseLayout>
