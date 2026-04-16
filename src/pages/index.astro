@@ -60,4 +60,23 @@ const audiences = [
   <TrustBar />
   <Testimonials />
   <CtaBand />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "iStream",
+    "description": "Professional AV and live streaming services in Hawkes Bay, New Zealand.",
+    "url": "https://istream.co.nz",
+    "telephone": "+64223806280",
+    "email": "info@istream.co.nz",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Omahu Road",
+      "addressLocality": "Hastings",
+      "addressRegion": "Hawkes Bay",
+      "addressCountry": "NZ"
+    },
+    "areaServed": "Hawkes Bay, New Zealand",
+    "serviceType": ["Live Streaming", "Video Recording", "Sound PA Hire", "Projector Screen Hire", "Equipment Hire"]
+  })} />
 </BaseLayout>
