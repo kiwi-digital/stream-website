@@ -1,0 +1,40 @@
+---
+interface Props {
+  question: string;
+  answer: string;
+  id: string;
+}
+const { question, answer, id } = Astro.props;
+const buttonId = `faq-btn-${id}`;
+const panelId = `faq-panel-${id}`;
+---
+
+<div class="group rounded-2xl border border-border bg-surface/50 backdrop-blur-xl transition-all duration-200 hover:-translate-y-0.5">
+  <button
+    type="button"
+    id={buttonId}
+    aria-controls={panelId}
+    aria-expanded="false"
+    class="flex w-full items-center gap-4 px-6 py-5 text-left focus-visible:outline-2 focus-visible:outline-accent"
+    data-faq-toggle
+  >
+    <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/5 transition-transform duration-500" data-faq-icon>
+      <svg class="h-4 w-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M12 5v14" /><path d="M5 12h14" />
+      </svg>
+    </span>
+    <span class="text-base font-medium text-text-primary">{question}</span>
+  </button>
+
+  <div
+    id={panelId}
+    role="region"
+    aria-labelledby={buttonId}
+    class="max-h-0 overflow-hidden transition-[max-height] duration-500 ease-out"
+    data-faq-panel
+  >
+    <p class="px-6 pb-5 pl-[4.5rem] text-sm leading-relaxed text-text-secondary">
+      {answer}
+    </p>
+  </div>
+</div>

@@ -1,0 +1,108 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import ServiceFeature from "../components/ServiceFeature.astro";
+import HowItWorks from "../components/HowItWorks.astro";
+import FaqItem from "../components/FaqItem.astro";
+import CtaBand from "../components/CtaBand.astro";
+import type { Service } from "../data/services";
+
+interface Props {
+  service: Service;
+}
+
+const { service } = Astro.props;
+---
+
+<BaseLayout
+  title={`${service.title} - iStream | Hawkes Bay`}
+  description={service.subtitle}
+>
+  <!-- Service Hero -->
+  <section class="mx-auto max-w-4xl px-6 pt-32 pb-16 text-center">
+    <h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl" style="letter-spacing: -0.01em;">
+      {service.title}
+    </h1>
+    <p class="mt-4 text-lg text-text-secondary">{service.subtitle}</p>
+    <a
+      href="/contact"
+      class="mt-8 inline-block rounded-full bg-accent px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-accent/25 transition-all hover:bg-accent-hover hover:shadow-accent-hover/25"
+    >
+      Get a Quote for {service.shortTitle}
+    </a>
+    <div class="mx-auto mt-8 h-px w-24 bg-gradient-to-r from-transparent via-accent to-transparent" />
+  </section>
+
+  <!-- What We Offer -->
+  <section class="mx-auto max-w-5xl px-6 py-16">
+    <h2 class="text-2xl font-semibold tracking-tight text-text-primary sm:text-3xl">
+      What We Offer
+    </h2>
+    <div class="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2">
+      {service.features.map((f) => (
+        <ServiceFeature icon={f.icon} title={f.title} description={f.description} />
+      ))}
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="mx-auto max-w-3xl px-6 py-16">
+    <h2 class="text-2xl font-semibold tracking-tight text-text-primary sm:text-3xl">
+      How It Works
+    </h2>
+    <div class="mt-10">
+      <HowItWorks steps={service.howItWorks} />
+    </div>
+  </section>
+
+  <!-- Popular For -->
+  <section class="mx-auto max-w-3xl px-6 py-16">
+    <h2 class="text-2xl font-semibold tracking-tight text-text-primary sm:text-3xl">
+      Popular For
+    </h2>
+    <div class="mt-6 flex flex-wrap gap-3">
+      {service.popularFor.map((tag) => (
+        <span class="rounded-full bg-accent-subtle px-4 py-2 text-sm font-medium text-white">
+          {tag}
+        </span>
+      ))}
+    </div>
+  </section>
+
+  <!-- FAQs -->
+  <section class="mx-auto max-w-3xl px-6 py-16">
+    <h2 class="text-2xl font-semibold tracking-tight text-text-primary sm:text-3xl">
+      Frequently Asked Questions
+    </h2>
+    <div class="mt-8 space-y-4">
+      {service.faqs.map((faq, i) => (
+        <FaqItem question={faq.question} answer={faq.answer} id={`${service.slug}-${i}`} />
+      ))}
+    </div>
+  </section>
+
+  <CtaBand buttonText={`Get a Quote for ${service.shortTitle}`} />
+</BaseLayout>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    document.querySelectorAll("[data-faq-toggle]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const panel = btn.parentElement?.querySelector("[data-faq-panel]") as HTMLElement | null;
+        const icon = btn.querySelector("[data-faq-icon]") as HTMLElement | null;
+        if (!panel || !icon) return;
+
+        const isOpen = btn.getAttribute("aria-expanded") === "true";
+
+        if (isOpen) {
+          panel.style.maxHeight = "0";
+          btn.setAttribute("aria-expanded", "false");
+          icon.style.transform = "rotate(0deg)";
+        } else {
+          panel.style.maxHeight = panel.scrollHeight + "px";
+          btn.setAttribute("aria-expanded", "true");
+          icon.style.transform = "rotate(45deg)";
+        }
+      });
+    });
+  });
+</script>
