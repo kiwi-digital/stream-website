@@ -1,0 +1,39 @@
+---
+import { testimonials } from "../data/testimonials";
+---
+
+<section class="mx-auto max-w-4xl px-6 py-24">
+  <div class="text-center">
+    <p class="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Testimonials</p>
+    <h2 class="mt-3 text-3xl font-semibold tracking-tight text-text-primary sm:text-4xl">
+      What our clients say
+    </h2>
+  </div>
+
+  <div class="mt-12 flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4 sm:grid sm:grid-cols-1 sm:overflow-visible lg:grid-cols-3" role="region" aria-roledescription="carousel" aria-label="Client testimonials">
+    {testimonials.map((t, i) => (
+      <article
+        class="relative min-w-[85vw] shrink-0 snap-center rounded-2xl border border-border bg-surface/50 p-8 sm:min-w-0"
+        role="group"
+        aria-roledescription="slide"
+        aria-label={`Testimonial ${i + 1} of ${testimonials.length}`}
+      >
+        <span class="absolute right-6 top-4 text-6xl font-bold leading-none text-white/5">
+          {String(i + 1).padStart(2, "0")}
+        </span>
+
+        <blockquote class="relative z-10">
+          <p class="text-lg font-light leading-relaxed text-text-primary">
+            "{t.quote}"
+          </p>
+          <footer class="mt-6">
+            <cite class="not-italic">
+              <span class="block font-semibold text-text-primary">{t.name}</span>
+              <span class="block text-sm text-text-secondary">{t.role}</span>
+            </cite>
+          </footer>
+        </blockquote>
+      </article>
+    ))}
+  </div>
+</section>
