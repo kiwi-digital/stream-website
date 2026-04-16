@@ -1,0 +1,50 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import TeamCard from "../components/TeamCard.astro";
+import CtaBand from "../components/CtaBand.astro";
+---
+
+<BaseLayout
+  title="About Us - iStream | Hawkes Bay AV & Streaming"
+  description="Learn about iStream, Hawkes Bay's professional AV and live streaming company. Personalised, professional service for your events."
+>
+  <section class="mx-auto max-w-3xl px-6 pt-32 pb-16 text-center">
+    <h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl" style="letter-spacing: -0.01em;">
+      About iStream
+    </h1>
+    <div class="mx-auto mt-8 h-px w-24 bg-gradient-to-r from-transparent via-accent to-transparent" />
+  </section>
+
+  <section class="mx-auto max-w-3xl px-6 py-16">
+    <h2 class="text-2xl font-semibold text-text-primary">Our Story</h2>
+    <div class="mt-6 space-y-4 text-text-secondary leading-relaxed">
+      <p>With the advancement of technology and connectivity, the ability to stream live video and audio anywhere in the world is now not only possible, but affordable.</p>
+      <p>Based in Hawkes Bay, iStream was founded with a simple mission: to help people share their most important moments with those who can't be there in person. Whether it's a funeral for distant family, a wedding for friends overseas, or a school prize-giving for working parents — we make sure no one misses out.</p>
+      <p>Our team brings years of experience in video recording and live streaming, and we've expanded to offer a full range of AV services including sound, projection, and equipment hire. From one room to the next, or around the world — we've got you covered.</p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-6 py-16">
+    <h2 class="text-2xl font-semibold text-text-primary">Our Commitment</h2>
+    <p class="mt-6 text-text-secondary leading-relaxed">
+      Our commitment to all our clients is to ensure that their expectations are always exceeded. We do this by providing a personalised, professional service, ensuring that we remain industry leading, yet affordable. Every event gets our full attention and care.
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-4xl px-6 py-16">
+    <h2 class="text-2xl font-semibold text-text-primary text-center">Our Team</h2>
+    <div class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 max-w-2xl mx-auto">
+      <TeamCard name="Team Member" role="Director" bio="Leading iStream with a passion for professional AV services and making sure every event is seamless." />
+      <TeamCard name="Team Member" role="Technical Lead" bio="Years of experience in live streaming and video production, ensuring the highest quality at every event." />
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-6 py-16">
+    <h2 class="text-2xl font-semibold text-text-primary">Our Equipment</h2>
+    <p class="mt-6 text-text-secondary leading-relaxed">
+      We use state-of-the-art pan, tilt, and zoom HD cameras that provide a level of quality that is unrivaled. Combined with professional audio equipment, video switchers, and reliable streaming infrastructure, we deliver broadcast-quality results for every event.
+    </p>
+  </section>
+
+  <CtaBand heading="Want to work with us? Let's talk." />
+</BaseLayout>
