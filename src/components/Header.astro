@@ -1,119 +1,418 @@
 ---
 import { site } from "../data/site";
+import { services } from "../data/services";
 
 const navLinks = [
-  { label: "Services", href: "/#services" },
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
+  { label: "Services", href: "/#services", hasDropdown: true },
+  { label: "About", href: "/about", hasDropdown: false },
+  { label: "Contact", href: "/contact", hasDropdown: false },
 ];
 
-const currentPath = Astro.url.pathname;
+const serviceIcons: Record<string, string> = {
+  Video: '<path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/>',
+  Camera: '<path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/>',
+  Speaker: '<rect width="16" height="20" x="4" y="2" rx="2"/><circle cx="12" cy="14" r="4"/><line x1="12" x2="12.01" y1="6" y2="6"/>',
+  Monitor: '<rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/>',
+  Wrench: '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>',
+};
+
+const serviceAccentColors: Record<string, string> = {
+  "live-streaming": "#0EA5E9",
+  "video-recording": "#6366F1",
+  "sound-pa": "#14B8A6",
+  "projector-screen-hire": "#22D3EE",
+  "equipment-hire": "#A855F7",
+};
 ---
 
 <header
-  class="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center rounded-full border border-border bg-surface/60 px-6 py-3 backdrop-blur-md transition-[border-radius] duration-300 w-[calc(100%-2rem)] max-w-3xl"
+  class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
   id="site-header"
 >
-  <div class="flex w-full items-center justify-between gap-6">
+  <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
     <!-- Logo -->
-    <a href="/" class="text-lg font-bold tracking-tight text-text-primary">
+    <a href="/" class="text-xl font-bold tracking-tight text-text-primary">
       {site.name}
     </a>
 
-    <!-- Desktop Nav -->
-    <nav class="hidden items-center gap-6 sm:flex" aria-label="Main navigation">
-      {navLinks.map((link) => (
-        <a
-          href={link.href}
-          class="group relative inline-block overflow-hidden h-5 text-sm"
-        >
-          <span class="flex flex-col transition-transform duration-400 ease-out group-hover:-translate-y-1/2">
-            <span class="text-text-secondary">{link.label}</span>
-            <span class="text-white">{link.label}</span>
-          </span>
-        </a>
-      ))}
+    <!-- Desktop Nav (centred) -->
+    <nav class="hidden items-center gap-8 sm:flex" aria-label="Main navigation">
+      {navLinks.map((link) =>
+        link.hasDropdown ? (
+          <div class="relative" id="services-dropdown-wrapper">
+            <button
+              type="button"
+              class="nav-link relative py-2 text-sm text-text-secondary transition-colors hover:text-white"
+              id="services-dropdown-trigger"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              {link.label}
+              <svg class="ml-1 inline-block h-3.5 w-3.5 transition-transform duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="services-chevron">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+              <span class="nav-underline" />
+            </button>
+
+            <!-- Mega Dropdown -->
+            <div
+              class="pointer-events-none absolute left-1/2 top-full -translate-x-1/2 pt-4 opacity-0 transition-all duration-200"
+              id="services-dropdown"
+            >
+              <div class="w-[680px] rounded-xl border border-border bg-surface/95 p-5 shadow-2xl backdrop-blur-xl">
+                <div class="grid grid-cols-2 gap-3">
+                  {services.map((service) => (
+                    <a
+                      href={`/services/${service.slug}`}
+                      class="group/item flex items-start gap-3 rounded-lg p-3 transition-colors hover:bg-white/5"
+                    >
+                      <div
+                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg"
+                        style={`background: ${serviceAccentColors[service.slug]}15; border: 1px solid ${serviceAccentColors[service.slug]}30;`}
+                      >
+                        <svg
+                          class="h-5 w-5"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke={serviceAccentColors[service.slug]}
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          set:html={serviceIcons[service.icon] || serviceIcons.Video}
+                        />
+                      </div>
+                      <div>
+                        <span
+                          class="text-sm font-medium text-text-primary transition-colors"
+                          style={`group-hover/item:color: ${serviceAccentColors[service.slug]};`}
+                        >
+                          {service.shortTitle}
+                        </span>
+                        <p class="mt-0.5 text-xs text-text-secondary line-clamp-1">
+                          {service.description}
+                        </p>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <a
+            href={link.href}
+            class="nav-link relative py-2 text-sm text-text-secondary transition-colors hover:text-white"
+          >
+            {link.label}
+            <span class="nav-underline" />
+          </a>
+        )
+      )}
     </nav>
 
     <!-- CTA + Mobile Toggle -->
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-4">
       <a
         href="/contact"
-        class="hidden rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-accent-hover sm:inline-block"
+        class="hidden rounded-full bg-accent px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-accent-hover sm:inline-block"
       >
         Get a Quote
       </a>
 
       <button
-        class="flex h-8 w-8 items-center justify-center text-text-secondary sm:hidden"
+        class="flex h-10 w-10 items-center justify-center rounded-lg text-text-secondary transition-colors hover:text-white sm:hidden"
         id="menu-toggle"
         aria-label="Open menu"
         aria-expanded="false"
       >
-        <svg class="h-6 w-6" id="menu-icon-open" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-        <svg class="hidden h-6 w-6" id="menu-icon-close" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" x2="20" y1="6" y2="6" />
+          <line x1="4" x2="20" y1="12" y2="12" />
+          <line x1="4" x2="20" y1="18" y2="18" />
         </svg>
       </button>
     </div>
   </div>
+</header>
 
-  <!-- Mobile Nav -->
-  <nav
-    class="flex max-h-0 w-full flex-col items-center gap-4 overflow-hidden opacity-0 transition-all duration-300 ease-in-out sm:hidden"
-    id="mobile-nav"
-    aria-label="Mobile navigation"
-  >
-    {navLinks.map((link) => (
-      <a
-        href={link.href}
-        class="w-full py-2 text-center text-text-secondary transition-colors hover:text-white"
+<!-- Mobile Overlay -->
+<div
+  class="fixed inset-0 z-50 flex flex-col bg-background/95 backdrop-blur-xl transition-all duration-300 pointer-events-none opacity-0 invisible"
+  id="mobile-overlay"
+  aria-hidden="true"
+>
+  <!-- Close Button -->
+  <div class="flex items-center justify-end px-6 py-4">
+    <button
+      class="flex h-10 w-10 items-center justify-center rounded-lg text-text-secondary transition-colors hover:text-white"
+      id="mobile-close"
+      aria-label="Close menu"
+    >
+      <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" x2="6" y1="6" y2="18" />
+        <line x1="6" x2="18" y1="6" y2="18" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile Nav Links -->
+  <nav class="flex flex-1 flex-col items-center justify-center gap-6" aria-label="Mobile navigation">
+    <!-- Services (expandable) -->
+    <div class="flex flex-col items-center">
+      <button
+        class="mobile-nav-link text-2xl font-semibold text-text-primary transition-colors hover:text-accent opacity-0 translate-y-4"
+        id="mobile-services-toggle"
+        aria-haspopup="true"
+        aria-expanded="false"
+        style="transition-delay: 0ms;"
       >
-        {link.label}
-      </a>
-    ))}
+        Services
+        <svg class="ml-1 inline-block h-4 w-4 transition-transform duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="mobile-services-chevron">
+          <path d="m6 9 6 6 6-6" />
+        </svg>
+      </button>
+
+      <div class="mt-3 flex flex-col items-center gap-2 overflow-hidden max-h-0 opacity-0 transition-all duration-300" id="mobile-services-list">
+        {services.map((service) => (
+          <a
+            href={`/services/${service.slug}`}
+            class="text-base transition-colors"
+            style={`color: ${serviceAccentColors[service.slug]};`}
+          >
+            {service.shortTitle}
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <a
+      href="/about"
+      class="mobile-nav-link text-2xl font-semibold text-text-primary transition-colors hover:text-accent opacity-0 translate-y-4"
+      style="transition-delay: 60ms;"
+    >
+      About
+    </a>
+
     <a
       href="/contact"
-      class="w-full rounded-full bg-accent py-2 text-center text-sm font-semibold text-white transition-colors hover:bg-accent-hover"
+      class="mobile-nav-link text-2xl font-semibold text-text-primary transition-colors hover:text-accent opacity-0 translate-y-4"
+      style="transition-delay: 120ms;"
+    >
+      Contact
+    </a>
+  </nav>
+
+  <!-- CTA at Bottom -->
+  <div class="px-6 pb-10">
+    <a
+      href="/contact"
+      class="mobile-nav-link block w-full rounded-full bg-accent py-3 text-center text-base font-semibold text-white transition-colors hover:bg-accent-hover opacity-0 translate-y-4"
+      style="transition-delay: 180ms;"
     >
       Get a Quote
     </a>
-  </nav>
-</header>
+  </div>
+</div>
+
+<style>
+  /* Nav underline animation */
+  .nav-underline {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 0;
+    background: var(--color-accent, #0EA5E9);
+    transition: width 0.3s ease;
+  }
+
+  .nav-link:hover .nav-underline {
+    width: 100%;
+  }
+
+  /* Scrolled state */
+  header.scrolled {
+    background: hsl(var(--background) / 0.8);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid hsl(var(--border));
+  }
+
+  /* Dropdown open state */
+  #services-dropdown.dropdown-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  #services-dropdown-trigger[aria-expanded="true"] #services-chevron {
+    transform: rotate(180deg);
+  }
+
+  /* Mobile overlay active state */
+  #mobile-overlay.overlay-open {
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+  }
+
+  #mobile-overlay.overlay-open .mobile-nav-link {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  /* Mobile services expanded */
+  #mobile-services-list.services-open {
+    max-height: 300px;
+    opacity: 1;
+  }
+
+  #mobile-services-toggle[aria-expanded="true"] #mobile-services-chevron {
+    transform: rotate(180deg);
+  }
+</style>
 
 <script>
   document.addEventListener("astro:page-load", () => {
-    const toggle = document.getElementById("menu-toggle");
-    const nav = document.getElementById("mobile-nav");
     const header = document.getElementById("site-header");
-    const iconOpen = document.getElementById("menu-icon-open");
-    const iconClose = document.getElementById("menu-icon-close");
+    const menuToggle = document.getElementById("menu-toggle");
+    const mobileOverlay = document.getElementById("mobile-overlay");
+    const mobileClose = document.getElementById("mobile-close");
+    const servicesDropdownTrigger = document.getElementById("services-dropdown-trigger");
+    const servicesDropdown = document.getElementById("services-dropdown");
+    const servicesDropdownWrapper = document.getElementById("services-dropdown-wrapper");
+    const mobileServicesToggle = document.getElementById("mobile-services-toggle");
+    const mobileServicesList = document.getElementById("mobile-services-list");
 
-    if (!toggle || !nav || !header || !iconOpen || !iconClose) return;
+    if (!header) return;
 
-    toggle.addEventListener("click", () => {
-      const isOpen = nav.classList.contains("max-h-[500px]");
-
-      if (isOpen) {
-        nav.classList.remove("max-h-[500px]", "opacity-100", "pt-4");
-        nav.classList.add("max-h-0", "opacity-0");
-        header.classList.remove("rounded-xl");
-        header.classList.add("rounded-full");
-        iconOpen.classList.remove("hidden");
-        iconClose.classList.add("hidden");
-        toggle.setAttribute("aria-expanded", "false");
-        toggle.setAttribute("aria-label", "Open menu");
+    // --- Scroll detection ---
+    const onScroll = () => {
+      if (window.scrollY > 20) {
+        header.classList.add("scrolled");
       } else {
-        nav.classList.remove("max-h-0", "opacity-0");
-        nav.classList.add("max-h-[500px]", "opacity-100", "pt-4");
-        header.classList.remove("rounded-full");
-        header.classList.add("rounded-xl");
-        iconOpen.classList.add("hidden");
-        iconClose.classList.remove("hidden");
-        toggle.setAttribute("aria-expanded", "true");
-        toggle.setAttribute("aria-label", "Close menu");
+        header.classList.remove("scrolled");
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+
+    // --- Desktop Services Dropdown ---
+    let hoverTimeout: ReturnType<typeof setTimeout>;
+
+    function openDropdown() {
+      if (!servicesDropdown || !servicesDropdownTrigger) return;
+      clearTimeout(hoverTimeout);
+      servicesDropdown.classList.add("dropdown-open");
+      servicesDropdownTrigger.setAttribute("aria-expanded", "true");
+    }
+
+    function closeDropdown() {
+      if (!servicesDropdown || !servicesDropdownTrigger) return;
+      servicesDropdown.classList.remove("dropdown-open");
+      servicesDropdownTrigger.setAttribute("aria-expanded", "false");
+    }
+
+    if (servicesDropdownWrapper) {
+      servicesDropdownWrapper.addEventListener("mouseenter", openDropdown);
+      servicesDropdownWrapper.addEventListener("mouseleave", () => {
+        hoverTimeout = setTimeout(closeDropdown, 150);
+      });
+    }
+
+    if (servicesDropdownTrigger) {
+      servicesDropdownTrigger.addEventListener("click", (e) => {
+        e.preventDefault();
+        const isOpen = servicesDropdownTrigger.getAttribute("aria-expanded") === "true";
+        if (isOpen) {
+          closeDropdown();
+        } else {
+          openDropdown();
+        }
+      });
+    }
+
+    // --- Mobile Menu ---
+    function openMobileMenu() {
+      if (!mobileOverlay || !menuToggle) return;
+      mobileOverlay.classList.add("overlay-open");
+      mobileOverlay.setAttribute("aria-hidden", "false");
+      menuToggle.setAttribute("aria-expanded", "true");
+      menuToggle.setAttribute("aria-label", "Close menu");
+      document.body.style.overflow = "hidden";
+      // Focus the close button
+      setTimeout(() => {
+        mobileClose?.focus();
+      }, 100);
+    }
+
+    function closeMobileMenu() {
+      if (!mobileOverlay || !menuToggle) return;
+      mobileOverlay.classList.remove("overlay-open");
+      mobileOverlay.setAttribute("aria-hidden", "true");
+      menuToggle.setAttribute("aria-expanded", "false");
+      menuToggle.setAttribute("aria-label", "Open menu");
+      document.body.style.overflow = "";
+      // Close services submenu too
+      if (mobileServicesList && mobileServicesToggle) {
+        mobileServicesList.classList.remove("services-open");
+        mobileServicesToggle.setAttribute("aria-expanded", "false");
+      }
+      menuToggle.focus();
+    }
+
+    menuToggle?.addEventListener("click", openMobileMenu);
+    mobileClose?.addEventListener("click", closeMobileMenu);
+
+    // Mobile services toggle
+    mobileServicesToggle?.addEventListener("click", () => {
+      if (!mobileServicesList || !mobileServicesToggle) return;
+      const isOpen = mobileServicesToggle.getAttribute("aria-expanded") === "true";
+      if (isOpen) {
+        mobileServicesList.classList.remove("services-open");
+        mobileServicesToggle.setAttribute("aria-expanded", "false");
+      } else {
+        mobileServicesList.classList.add("services-open");
+        mobileServicesToggle.setAttribute("aria-expanded", "true");
+      }
+    });
+
+    // Close mobile menu when clicking a link inside it
+    mobileOverlay?.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", closeMobileMenu);
+    });
+
+    // --- Keyboard: Escape closes dropdown and mobile menu ---
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeDropdown();
+        if (mobileOverlay?.classList.contains("overlay-open")) {
+          closeMobileMenu();
+        }
+      }
+    });
+
+    // --- Focus trap in mobile overlay ---
+    mobileOverlay?.addEventListener("keydown", (e) => {
+      if (e.key !== "Tab") return;
+      const focusableElements = mobileOverlay.querySelectorAll<HTMLElement>(
+        'a[href], button, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusableElements.length === 0) return;
+
+      const firstEl = focusableElements[0];
+      const lastEl = focusableElements[focusableElements.length - 1];
+
+      if (e.shiftKey) {
+        if (document.activeElement === firstEl) {
+          e.preventDefault();
+          lastEl.focus();
+        }
+      } else {
+        if (document.activeElement === lastEl) {
+          e.preventDefault();
+          firstEl.focus();
+        }
       }
     });
   });

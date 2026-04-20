@@ -20,6 +20,8 @@ export interface Service {
   popularFor: string[];
   howItWorks: [string, string, string];
   faqs: FaqItem[];
+  accentColor: string;
+  imageUrl: string;
 }
 
 export const services: Service[] = [
@@ -44,6 +46,8 @@ export const services: Service[] = [
       { question: "What happens if the internet drops during the event?", answer: "We always have backup connectivity options and record locally as a failsafe. If the stream is interrupted, the recording ensures nothing is lost." },
       { question: "Can I watch the stream after the event?", answer: "Absolutely. We host your video online after the event so anyone can catch up, even if they missed the live broadcast." },
     ],
+    accentColor: "#0EA5E9",
+    imageUrl: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=800&q=80",
   },
   {
     slug: "video-recording",
@@ -65,6 +69,8 @@ export const services: Service[] = [
       { question: "Can I also get a live stream with the recording?", answer: "Yes — we often bundle live streaming and recording together. Contact us for a combined quote." },
       { question: "How long does it take to receive the recording?", answer: "You'll receive your USB at the end of the event or within a few business days, depending on the package." },
     ],
+    accentColor: "#6366F1",
+    imageUrl: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=600&q=80",
   },
   {
     slug: "sound-pa",
@@ -86,6 +92,8 @@ export const services: Service[] = [
       { question: "Do you supply microphones?", answer: "Yes — we provide wireless lapel mics, handheld mics, and podium mics as part of the sound package." },
       { question: "Can I play my own music through the system?", answer: "Absolutely. Connect via Bluetooth, USB, or aux cable — whatever works best for you." },
     ],
+    accentColor: "#14B8A6",
+    imageUrl: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=600&q=80",
   },
   {
     slug: "projector-screen-hire",
@@ -107,6 +115,8 @@ export const services: Service[] = [
       { question: "What size screens do you have?", answer: "We carry screens from 6ft portable to large format. We'll recommend the right size based on your venue and audience." },
       { question: "Can you display a live camera feed on the screen?", answer: "Yes — this is one of our most popular setups. We can show a live camera feed on one or multiple screens around the venue." },
     ],
+    accentColor: "#22D3EE",
+    imageUrl: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=600&q=80",
   },
   {
     slug: "equipment-hire",
@@ -128,5 +138,7 @@ export const services: Service[] = [
       { question: "How long can I hire equipment for?", answer: "Hire periods are flexible — from a single day to a full week. Contact us for pricing based on your needs." },
       { question: "Do you deliver and collect the equipment?", answer: "Yes. We deliver to your venue, set up if needed, and collect after your event." },
     ],
+    accentColor: "#A855F7",
+    imageUrl: "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=800&q=80",
   },
 ];
