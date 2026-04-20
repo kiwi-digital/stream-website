@@ -3,9 +3,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import Hero from "../components/Hero.astro";
 import BentoServiceCard from "../components/BentoServiceCard.astro";
 import AudienceCard from "../components/AudienceCard.astro";
+import EventCard from "../components/EventCard.astro";
 import TrustBar from "../components/TrustBar.astro";
 import Testimonials from "../components/Testimonials.astro";
 import CtaBand from "../components/CtaBand.astro";
+import { events } from "../data/events";
 
 const audiences = [
   { icon: "Heart", title: "Funeral Homes", description: "Helping families share services with loved ones who can't be there in person." },
@@ -100,6 +102,32 @@ const bentoServices = [
     <div class="mt-12 grid grid-cols-2 gap-8 lg:grid-cols-4">
       {audiences.map((a) => (
         <AudienceCard icon={a.icon} title={a.title} description={a.description} />
+      ))}
+    </div>
+  </section>
+
+  <!-- Events We Cover -->
+  <section class="reveal mx-auto max-w-6xl px-6 py-24">
+    <div class="flex flex-col items-center gap-3 text-center">
+      <div class="h-1 w-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500"></div>
+      <p class="text-xs font-semibold uppercase tracking-[0.2em] text-indigo-400">Events We Cover</p>
+      <h2 class="mt-1 text-3xl font-semibold tracking-tight text-text-primary sm:text-4xl">
+        Whatever the occasion, we've got you covered
+      </h2>
+    </div>
+
+    <div class="reveal stagger-grid mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {events.map((event, i) => (
+        <EventCard
+          title={event.title}
+          description={event.description}
+          services={event.services}
+          benefits={event.benefits}
+          ctaLabel={event.ctaLabel}
+          accentColor={event.accentColor}
+          imageUrl={event.imageUrl}
+          span={i < 2 ? "lg:col-span-1 sm:col-span-1" : ""}
+        />
       ))}
     </div>
   </section>

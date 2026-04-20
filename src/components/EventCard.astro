@@ -1,0 +1,78 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  services: string[];
+  benefits: string[];
+  ctaLabel: string;
+  accentColor: string;
+  imageUrl: string;
+  span?: string;
+}
+
+const { title, description, services, benefits, ctaLabel, accentColor, imageUrl, span = "" } = Astro.props;
+---
+
+<div
+  class:list={[
+    "bento-border bento-tilt group relative flex flex-col justify-end overflow-hidden rounded-2xl",
+    "min-h-[320px]",
+    span,
+  ]}
+  style={`--accent-color: ${accentColor};`}
+>
+  <!-- Background image -->
+  <img
+    src={imageUrl}
+    alt=""
+    role="presentation"
+    class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+    loading="lazy"
+    decoding="async"
+  />
+
+  <!-- Dark gradient overlay -->
+  <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/70 to-black/30"></div>
+
+  <!-- Content -->
+  <div class="relative z-10 flex flex-col gap-4 p-6">
+    <!-- Event title -->
+    <p class="text-xs font-semibold uppercase tracking-[0.15em]" style={`color: ${accentColor};`}>
+      {title}
+    </p>
+
+    <p class="text-sm text-white/80">{description}</p>
+
+    <!-- Services tags -->
+    <div class="flex flex-wrap gap-2">
+      {services.map((svc) => (
+        <span
+          class="rounded-full px-3 py-1 text-xs font-medium text-white/90"
+          style={`background: ${accentColor}20; border: 1px solid ${accentColor}40;`}
+        >
+          {svc}
+        </span>
+      ))}
+    </div>
+
+    <!-- Benefits -->
+    <ul class="space-y-1">
+      {benefits.map((benefit) => (
+        <li class="flex items-start gap-2 text-xs text-white/70">
+          <svg class="mt-0.5 h-3 w-3 shrink-0" style={`color: ${accentColor};`} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          {benefit}
+        </li>
+      ))}
+    </ul>
+
+    <!-- CTA -->
+    <a
+      href="/contact"
+      class="mt-2 inline-flex w-fit items-center gap-2 rounded-full px-5 py-2 text-xs font-semibold text-white transition-all hover:gap-3"
+      style={`background: ${accentColor}; box-shadow: 0 0 20px ${accentColor}30;`}
+    >
+      {ctaLabel}
+      <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+    </a>
+  </div>
+</div>
