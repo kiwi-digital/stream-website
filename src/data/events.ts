@@ -48,7 +48,7 @@ export const events: EventType[] = [
     benefits: ["Parents can watch live from work", "Big screen replay in the hall", "Recording for the school archive"],
     ctaLabel: "Plan Your School Event",
     accentColor: "#22D3EE",
-    imageUrl: "https://images.unsplash.com/photo-1523050854058-8df90110c476?w=800&q=80",
+    imageUrl: "https://images.unsplash.com/photo-1577896851231-70ef18881754?w=800&q=80",
   },
   {
     slug: "church-services",

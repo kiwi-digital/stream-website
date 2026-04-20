@@ -4,6 +4,7 @@ import { services } from "../data/services";
 
 const navLinks = [
   { label: "Services", href: "/#services", hasDropdown: true },
+  { label: "Events", href: "/#events", hasDropdown: false },
   { label: "About", href: "/about", hasDropdown: false },
   { label: "Contact", href: "/contact", hasDropdown: false },
 ];
@@ -186,9 +187,17 @@ const serviceAccentColors: Record<string, string> = {
     </div>
 
     <a
-      href="/about"
+      href="/#events"
       class="mobile-nav-link text-2xl font-semibold text-text-primary transition-colors hover:text-accent opacity-0 translate-y-4"
       style="transition-delay: 60ms;"
+    >
+      Events
+    </a>
+
+    <a
+      href="/about"
+      class="mobile-nav-link text-2xl font-semibold text-text-primary transition-colors hover:text-accent opacity-0 translate-y-4"
+      style="transition-delay: 120ms;"
     >
       About
     </a>
@@ -196,7 +205,7 @@ const serviceAccentColors: Record<string, string> = {
     <a
       href="/contact"
       class="mobile-nav-link text-2xl font-semibold text-text-primary transition-colors hover:text-accent opacity-0 translate-y-4"
-      style="transition-delay: 120ms;"
+      style="transition-delay: 180ms;"
     >
       Contact
     </a>
@@ -207,7 +216,7 @@ const serviceAccentColors: Record<string, string> = {
     <a
       href="/contact"
       class="mobile-nav-link block w-full rounded-full bg-accent py-3 text-center text-base font-semibold text-white transition-colors hover:bg-accent-hover opacity-0 translate-y-4"
-      style="transition-delay: 180ms;"
+      style="transition-delay: 240ms;"
     >
       Get a Quote
     </a>
