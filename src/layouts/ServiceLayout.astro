@@ -18,18 +18,30 @@ const { service } = Astro.props;
   description={`${service.subtitle} Professional ${service.title.toLowerCase()} services in Hawkes Bay, New Zealand.`}
 >
   <!-- Service Hero -->
-  <section class="mx-auto max-w-4xl px-6 pt-32 pb-16 text-center">
-    <h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl" style="letter-spacing: -0.01em;">
-      {service.title}
-    </h1>
-    <p class="mt-4 text-lg text-text-secondary">{service.subtitle}</p>
-    <a
-      href="/contact"
-      class="mt-8 inline-block rounded-full bg-accent px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-accent/25 transition-all hover:bg-accent-hover hover:shadow-accent-hover/25"
-    >
-      Get a Quote for {service.shortTitle}
-    </a>
-    <div class="mx-auto mt-8 h-px w-24 bg-gradient-to-r from-transparent via-accent to-transparent" />
+  <section class="film-grain relative flex min-h-[60vh] items-end overflow-hidden pb-16">
+    <img
+      src={service.imageUrl}
+      alt=""
+      role="presentation"
+      class="absolute inset-0 h-full w-full object-cover"
+      loading="eager"
+      decoding="async"
+    />
+    <div class="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background/30"></div>
+    <div class="relative z-10 mx-auto max-w-4xl px-6 text-center">
+      <div class="mx-auto mb-4 h-1 w-12 rounded-full" style={`background: ${service.accentColor};`}></div>
+      <h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl" style="letter-spacing: -0.01em;">
+        {service.title}
+      </h1>
+      <p class="mt-4 text-lg text-text-secondary">{service.subtitle}</p>
+      <a
+        href="/contact"
+        class="mt-8 inline-block rounded-full px-8 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:shadow-xl"
+        style={`background: ${service.accentColor}; box-shadow: 0 0 30px ${service.accentColor}30;`}
+      >
+        Get a Quote for {service.shortTitle}
+      </a>
+    </div>
   </section>
 
   <!-- What We Offer -->
@@ -39,7 +51,7 @@ const { service } = Astro.props;
     </h2>
     <div class="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2">
       {service.features.map((f) => (
-        <ServiceFeature icon={f.icon} title={f.title} description={f.description} />
+        <ServiceFeature icon={f.icon} title={f.title} description={f.description} accentColor={service.accentColor} />
       ))}
     </div>
   </section>
@@ -50,7 +62,7 @@ const { service } = Astro.props;
       How It Works
     </h2>
     <div class="mt-10">
-      <HowItWorks steps={service.howItWorks} />
+      <HowItWorks steps={service.howItWorks} accentColor={service.accentColor} />
     </div>
   </section>
 
@@ -61,7 +73,7 @@ const { service } = Astro.props;
     </h2>
     <div class="mt-6 flex flex-wrap gap-3">
       {service.popularFor.map((tag) => (
-        <span class="rounded-full bg-accent-subtle px-4 py-2 text-sm font-medium text-white">
+        <span class="rounded-full px-4 py-2 text-sm font-medium text-white" style={`background: ${service.accentColor}20; border: 1px solid ${service.accentColor}40; color: ${service.accentColor};`}>
           {tag}
         </span>
       ))}

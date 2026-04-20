@@ -1,21 +1,23 @@
 ---
 interface Props {
   steps: [string, string, string];
+  accentColor?: string;
 }
-const { steps } = Astro.props;
+
+const { steps, accentColor = "#0EA5E9" } = Astro.props;
 ---
 
 <div class="flex flex-col items-start gap-8 sm:flex-row sm:items-center sm:gap-4">
   {steps.map((step, i) => (
     <>
       <div class="flex items-start gap-4 sm:flex-col sm:items-center sm:text-center">
-        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent text-sm font-bold text-white">
+        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white" style={`background: ${accentColor};`}>
           {i + 1}
         </div>
         <p class="text-sm text-text-secondary sm:mt-3">{step}</p>
       </div>
       {i < 2 && (
-        <div class="ml-5 h-8 w-px bg-border sm:ml-0 sm:h-px sm:w-full sm:max-w-[80px]" />
+        <div class="ml-5 h-8 w-px sm:ml-0 sm:h-px sm:w-full sm:max-w-[80px]" style={`background: linear-gradient(to bottom, ${accentColor}40, transparent); `}></div>
       )}
     </>
   ))}

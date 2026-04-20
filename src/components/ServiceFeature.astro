@@ -3,8 +3,10 @@ interface Props {
   icon: string;
   title: string;
   description: string;
+  accentColor?: string;
 }
-const { icon, title, description } = Astro.props;
+
+const { icon, title, description, accentColor = "#0EA5E9" } = Astro.props;
 
 const iconPaths: Record<string, string> = {
   MonitorPlay: '<path d="M10 7.75a.75.75 0 0 1 1.142-.638l3.664 2.249a.75.75 0 0 1 0 1.278l-3.664 2.25a.75.75 0 0 1-1.142-.64z"/><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/>',
@@ -28,9 +30,9 @@ const iconPaths: Record<string, string> = {
 };
 ---
 
-<div class="flex flex-col gap-3">
-  <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-accent-subtle">
-    <svg class="h-5 w-5 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={iconPaths[icon] || ''} />
+<div class="flex flex-col gap-3 rounded-xl border border-border bg-surface/50 p-5">
+  <div class="flex h-10 w-10 items-center justify-center rounded-lg" style={`background: ${accentColor}15;`}>
+    <svg class="h-5 w-5" style={`color: ${accentColor};`} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={iconPaths[icon] || ''} />
   </div>
   <h3 class="text-lg font-semibold text-text-primary">{title}</h3>
   <p class="text-sm text-text-secondary">{description}</p>
