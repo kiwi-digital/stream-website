@@ -2,49 +2,153 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import TeamCard from "../components/TeamCard.astro";
 import CtaBand from "../components/CtaBand.astro";
+
+const milestones = [
+  { year: "2015", title: "Founded", description: "iStream launched in Hawkes Bay with a mission to make live streaming accessible and affordable." },
+  { year: "2017", title: "First 100 Events", description: "Reached our first milestone, streaming funerals, weddings, and school events across the region." },
+  { year: "2019", title: "Full AV Services", description: "Expanded beyond streaming to offer sound, projection, and equipment hire — a complete AV solution." },
+  { year: "2022", title: "HD Upgrade", description: "Invested in state-of-the-art PTZ HD cameras and broadcast-grade switching equipment." },
+  { year: "2024", title: "500+ Events", description: "Celebrated streaming over 500 events, trusted by funeral homes, schools, and churches across Hawkes Bay." },
+];
+
+const equipment = [
+  { name: "PTZ HD Cameras", description: "Pan, tilt, and zoom cameras delivering broadcast-quality video", imageUrl: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=400&q=80" },
+  { name: "Professional Audio", description: "Wireless mics, PA systems, and mixing desks for crystal-clear sound", imageUrl: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=400&q=80" },
+  { name: "Streaming Infrastructure", description: "Reliable encoders and CDN delivery for smooth, buffer-free streaming", imageUrl: "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=400&q=80" },
+];
 ---
 
 <BaseLayout
   title="About Us - iStream | Hawkes Bay AV & Streaming"
   description="Learn about iStream, Hawkes Bay's professional AV and live streaming company. Personalised, professional service for your events."
 >
-  <section class="mx-auto max-w-3xl px-6 pt-32 pb-16 text-center">
-    <h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl" style="letter-spacing: -0.01em;">
-      About iStream
-    </h1>
-    <div class="mx-auto mt-8 h-px w-24 bg-gradient-to-r from-transparent via-accent to-transparent" />
+  <!-- Hero -->
+  <section class="film-grain relative flex min-h-[50vh] items-end overflow-hidden pb-16">
+    <img
+      src="https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1920&q=80"
+      alt=""
+      role="presentation"
+      class="absolute inset-0 h-full w-full object-cover"
+      loading="eager"
+    />
+    <div class="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background/40"></div>
+    <div class="relative z-10 mx-auto max-w-4xl px-6 text-center">
+      <div class="mx-auto mb-4 h-1 w-12 rounded-full bg-gradient-to-r from-sky-500 to-teal-500"></div>
+      <h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl" style="letter-spacing: -0.01em;">
+        About iStream
+      </h1>
+      <p class="mt-4 text-lg text-text-secondary">
+        Hawkes Bay's trusted AV and live streaming team since 2015
+      </p>
+    </div>
   </section>
 
-  <section class="mx-auto max-w-3xl px-6 py-16">
-    <h2 class="text-2xl font-semibold text-text-primary">Our Story</h2>
-    <div class="mt-6 space-y-4 text-text-secondary leading-relaxed">
+  <!-- Story -->
+  <section class="reveal mx-auto max-w-3xl px-6 py-20">
+    <div class="flex flex-col items-center gap-3 text-center">
+      <div class="h-1 w-8 rounded-full bg-gradient-to-r from-sky-500 to-teal-500"></div>
+      <h2 class="text-2xl font-semibold text-text-primary sm:text-3xl">Our Story</h2>
+    </div>
+    <div class="mt-8 space-y-4 text-text-secondary leading-relaxed">
       <p>With the advancement of technology and connectivity, the ability to stream live video and audio anywhere in the world is now not only possible, but affordable.</p>
       <p>Based in Hawkes Bay, iStream was founded with a simple mission: to help people share their most important moments with those who can't be there in person. Whether it's a funeral for distant family, a wedding for friends overseas, or a school prize-giving for working parents — we make sure no one misses out.</p>
       <p>Our team brings years of experience in video recording and live streaming, and we've expanded to offer a full range of AV services including sound, projection, and equipment hire. From one room to the next, or around the world — we've got you covered.</p>
     </div>
   </section>
 
-  <section class="mx-auto max-w-3xl px-6 py-16">
-    <h2 class="text-2xl font-semibold text-text-primary">Our Commitment</h2>
-    <p class="mt-6 text-text-secondary leading-relaxed">
-      Our commitment to all our clients is to ensure that their expectations are always exceeded. We do this by providing a personalised, professional service, ensuring that we remain industry leading, yet affordable. Every event gets our full attention and care.
-    </p>
+  <!-- Timeline -->
+  <section class="reveal mx-auto max-w-4xl px-6 py-20">
+    <div class="flex flex-col items-center gap-3 text-center">
+      <div class="h-1 w-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500"></div>
+      <h2 class="text-2xl font-semibold text-text-primary sm:text-3xl">Our Journey</h2>
+    </div>
+    <div class="mt-12 relative">
+      <!-- Vertical line -->
+      <div class="absolute left-[27px] top-0 bottom-0 w-px bg-gradient-to-b from-accent via-teal to-transparent sm:left-1/2 sm:-translate-x-px"></div>
+
+      {milestones.map((m, i) => (
+        <div class:list={["relative flex items-start gap-6 pb-12", i % 2 === 0 ? "sm:flex-row" : "sm:flex-row-reverse"]}>
+          <!-- Dot -->
+          <div class="relative z-10 flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-sm font-bold text-accent sm:absolute sm:left-1/2 sm:-translate-x-1/2">
+            {m.year}
+          </div>
+          <!-- Content -->
+          <div class:list={["flex-1 rounded-xl border border-border bg-surface/50 p-5 sm:w-[calc(50%-40px)]", i % 2 === 0 ? "sm:mr-auto sm:pr-8" : "sm:ml-auto sm:pl-8"]}>
+            <h3 class="text-lg font-semibold text-text-primary">{m.title}</h3>
+            <p class="mt-1 text-sm text-text-secondary">{m.description}</p>
+          </div>
+        </div>
+      ))}
+    </div>
   </section>
 
-  <section class="mx-auto max-w-4xl px-6 py-16">
-    <h2 class="text-2xl font-semibold text-text-primary text-center">Our Team</h2>
+  <!-- Commitment -->
+  <section class="reveal border-y border-border bg-surface/30 py-20">
+    <div class="mx-auto max-w-3xl px-6 text-center">
+      <div class="mx-auto mb-3 h-1 w-8 rounded-full bg-gradient-to-r from-teal to-cyan-400"></div>
+      <h2 class="text-2xl font-semibold text-text-primary sm:text-3xl">Our Commitment</h2>
+      <p class="mt-6 text-lg text-text-secondary leading-relaxed">
+        Our commitment to all our clients is to ensure that their expectations are always exceeded. We do this by providing a personalised, professional service, ensuring that we remain industry leading, yet affordable. Every event gets our full attention and care.
+      </p>
+    </div>
+  </section>
+
+  <!-- Team -->
+  <section class="reveal mx-auto max-w-4xl px-6 py-20">
+    <div class="flex flex-col items-center gap-3 text-center">
+      <div class="h-1 w-8 rounded-full bg-gradient-to-r from-sky-500 to-indigo-500"></div>
+      <h2 class="text-2xl font-semibold text-text-primary sm:text-3xl">Our Team</h2>
+    </div>
     <div class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 max-w-2xl mx-auto">
       <TeamCard name="Team Member" role="Director" bio="Leading iStream with a passion for professional AV services and making sure every event is seamless." />
       <TeamCard name="Team Member" role="Technical Lead" bio="Years of experience in live streaming and video production, ensuring the highest quality at every event." />
     </div>
   </section>
 
-  <section class="mx-auto max-w-3xl px-6 py-16">
-    <h2 class="text-2xl font-semibold text-text-primary">Our Equipment</h2>
-    <p class="mt-6 text-text-secondary leading-relaxed">
-      We use state-of-the-art pan, tilt, and zoom HD cameras that provide a level of quality that is unrivaled. Combined with professional audio equipment, video switchers, and reliable streaming infrastructure, we deliver broadcast-quality results for every event.
-    </p>
+  <!-- Equipment Showcase -->
+  <section class="reveal mx-auto max-w-5xl px-6 py-20">
+    <div class="flex flex-col items-center gap-3 text-center">
+      <div class="h-1 w-8 rounded-full bg-gradient-to-r from-purple-500 to-cyan-400"></div>
+      <h2 class="text-2xl font-semibold text-text-primary sm:text-3xl">Our Equipment</h2>
+      <p class="mt-2 max-w-lg text-text-secondary">
+        We invest in the best gear so you get broadcast-quality results at every event.
+      </p>
+    </div>
+    <div class="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3">
+      {equipment.map((item) => (
+        <div class="bento-tilt group relative overflow-hidden rounded-2xl">
+          <img
+            src={item.imageUrl}
+            alt={item.name}
+            class="h-48 w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            loading="lazy"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 right-0 p-5">
+            <h3 class="text-base font-semibold text-white">{item.name}</h3>
+            <p class="mt-1 text-xs text-white/70">{item.description}</p>
+          </div>
+        </div>
+      ))}
+    </div>
   </section>
 
   <CtaBand heading="Want to work with us? Let's talk." />
 </BaseLayout>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+  });
+</script>
