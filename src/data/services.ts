@@ -22,6 +22,7 @@ export interface Service {
   faqs: FaqItem[];
   accentColor: string;
   imageUrl: string;
+  pricing: { label: string; from: string; note: string };
 }
 
 export const services: Service[] = [
@@ -48,6 +49,7 @@ export const services: Service[] = [
     ],
     accentColor: "#0EA5E9",
     imageUrl: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=800&q=80",
+    pricing: { label: "Live Streaming", from: "$450", note: "Includes setup, single camera, and 2-hour stream. Multi-camera and longer events quoted on request." },
   },
   {
     slug: "video-recording",
@@ -71,6 +73,7 @@ export const services: Service[] = [
     ],
     accentColor: "#6366F1",
     imageUrl: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=600&q=80",
+    pricing: { label: "Video Recording", from: "$350", note: "Includes setup, recording, and delivery on USB. Additional cameras and editing available." },
   },
   {
     slug: "sound-pa",
@@ -94,6 +97,7 @@ export const services: Service[] = [
     ],
     accentColor: "#14B8A6",
     imageUrl: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=600&q=80",
+    pricing: { label: "Sound & PA", from: "$250", note: "Includes PA system, wireless mic, and setup. Larger venues and additional mics quoted on request." },
   },
   {
     slug: "projector-screen-hire",
@@ -117,6 +121,7 @@ export const services: Service[] = [
     ],
     accentColor: "#22D3EE",
     imageUrl: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=600&q=80",
+    pricing: { label: "Projector & Screens", from: "$200", note: "Includes projector, screen, and setup. Multiple screens and larger formats available." },
   },
   {
     slug: "equipment-hire",
@@ -140,5 +145,6 @@ export const services: Service[] = [
     ],
     accentColor: "#A855F7",
     imageUrl: "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=800&q=80",
+    pricing: { label: "Equipment Hire", from: "$100", note: "Day rate for individual items. Bundles and weekly rates available on request." },
   },
 ];
