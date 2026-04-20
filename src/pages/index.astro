@@ -1,18 +1,60 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Hero from "../components/Hero.astro";
-import ServiceCard from "../components/ServiceCard.astro";
+import BentoServiceCard from "../components/BentoServiceCard.astro";
 import AudienceCard from "../components/AudienceCard.astro";
 import TrustBar from "../components/TrustBar.astro";
 import Testimonials from "../components/Testimonials.astro";
 import CtaBand from "../components/CtaBand.astro";
-import { services } from "../data/services";
 
 const audiences = [
   { icon: "Heart", title: "Funeral Homes", description: "Helping families share services with loved ones who can't be there in person." },
   { icon: "Flower", title: "Wedding Venues", description: "Live streaming and recording so every guest can be part of the celebration." },
   { icon: "GraduationCap", title: "Schools", description: "Stream prize-givings, assemblies, and sports events for parents and whanau." },
   { icon: "Church", title: "Churches & Community", description: "Extend your reach with live streamed services and community events." },
+];
+
+const bentoServices = [
+  {
+    title: "Live Streaming",
+    description: "Share your event with the world in real time",
+    href: "/services/live-streaming",
+    accentColor: "#0EA5E9",
+    imageUrl: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=800&q=80",
+    span: "sm:col-span-2 sm:row-span-2 sm:min-h-[460px]",
+  },
+  {
+    title: "Video Recording",
+    description: "Lasting memories, professionally captured",
+    href: "/services/video-recording",
+    accentColor: "#6366F1",
+    imageUrl: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=600&q=80",
+    span: "",
+  },
+  {
+    title: "Sound & PA",
+    description: "Crystal-clear audio for any venue",
+    href: "/services/sound-pa",
+    accentColor: "#14B8A6",
+    imageUrl: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=600&q=80",
+    span: "",
+  },
+  {
+    title: "Projector & Screens",
+    description: "Make your visuals shine",
+    href: "/services/projector-screen-hire",
+    accentColor: "#22D3EE",
+    imageUrl: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=600&q=80",
+    span: "",
+  },
+  {
+    title: "Equipment Hire",
+    description: "Professional AV gear, without the cost of ownership",
+    href: "/services/equipment-hire",
+    accentColor: "#A855F7",
+    imageUrl: "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=800&q=80",
+    span: "sm:col-span-2",
+  },
 ];
 ---
 
@@ -22,21 +64,25 @@ const audiences = [
 >
   <Hero />
 
-  <!-- Services Grid -->
+  <!-- Services Bento Grid -->
   <section id="services" class="reveal mx-auto max-w-6xl px-6 py-24">
-    <div class="text-center">
+    <div class="flex flex-col items-center gap-3 text-center">
+      <div class="h-1 w-8 rounded-full bg-gradient-to-r from-sky-500 to-teal-500"></div>
       <p class="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Our Services</p>
-      <h2 class="mt-3 text-3xl font-semibold tracking-tight text-text-primary sm:text-4xl">
+      <h2 class="mt-1 text-3xl font-semibold tracking-tight text-text-primary sm:text-4xl">
         Everything you need for a seamless event
       </h2>
     </div>
-    <div class="reveal stagger-grid mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {services.map((service) => (
-        <ServiceCard
-          title={service.shortTitle}
+
+    <div class="reveal stagger-grid mt-12 grid grid-cols-1 gap-4 sm:grid-cols-3">
+      {bentoServices.map((service) => (
+        <BentoServiceCard
+          title={service.title}
           description={service.description}
-          icon={service.icon}
-          href={`/services/${service.slug}`}
+          href={service.href}
+          accentColor={service.accentColor}
+          imageUrl={service.imageUrl}
+          span={service.span}
         />
       ))}
     </div>
@@ -44,9 +90,10 @@ const audiences = [
 
   <!-- Who We Work With -->
   <section class="reveal mx-auto max-w-4xl px-6 py-24">
-    <div class="text-center">
+    <div class="flex flex-col items-center gap-3 text-center">
+      <div class="h-1 w-8 rounded-full bg-gradient-to-r from-teal-500 to-cyan-400"></div>
       <p class="text-xs font-semibold uppercase tracking-[0.2em] text-teal">Who We Work With</p>
-      <h2 class="mt-3 text-3xl font-semibold tracking-tight text-text-primary sm:text-4xl">
+      <h2 class="mt-1 text-3xl font-semibold tracking-tight text-text-primary sm:text-4xl">
         Trusted by organisations across Hawkes Bay
       </h2>
     </div>
@@ -80,20 +127,20 @@ const audiences = [
     "serviceType": ["Live Streaming", "Video Recording", "Sound PA Hire", "Projector Screen Hire", "Equipment Hire"]
   })} />
 
-<script>
-  document.addEventListener("astro:page-load", () => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-    document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
-  });
-</script>
+  <script>
+    document.addEventListener("astro:page-load", () => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+      document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+    });
+  </script>
 </BaseLayout>
