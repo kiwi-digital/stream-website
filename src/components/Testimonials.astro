@@ -3,39 +3,39 @@ import { testimonials } from "../data/testimonials";
 ---
 
 <section class="mx-auto max-w-4xl px-6 py-24">
-  <div class="text-center">
+  <div class="flex flex-col items-center gap-3 text-center">
+    <div class="h-1 w-8 rounded-full bg-gradient-to-r from-sky-500 to-indigo-500"></div>
     <p class="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Testimonials</p>
-    <h2 class="mt-3 text-3xl font-semibold tracking-tight text-text-primary sm:text-4xl">
+    <h2 class="mt-1 text-3xl font-semibold tracking-tight text-text-primary sm:text-4xl">
       What our clients say
     </h2>
   </div>
 
-  <div
-    class="mt-12 flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4 sm:grid sm:grid-cols-1 sm:overflow-visible lg:grid-cols-3"
-    role="region"
-    aria-roledescription="carousel"
-    aria-label="Client testimonials"
-    data-testimonial-container
-  >
+  <div class="relative mt-16 min-h-[280px]" role="region" aria-roledescription="carousel" aria-label="Client testimonials">
+    <span class="pointer-events-none absolute -left-4 -top-8 text-[128px] font-bold leading-none text-accent/10 select-none" aria-hidden="true">
+      &ldquo;
+    </span>
+
     {testimonials.map((t, i) => (
       <article
-        class="relative min-w-[85vw] shrink-0 snap-center rounded-2xl border border-border bg-surface/50 p-8 sm:min-w-0"
+        class:list={[
+          "absolute inset-0 transition-opacity duration-500",
+          i === 0 ? "opacity-100" : "opacity-0 pointer-events-none",
+        ]}
+        data-testimonial-slide={i}
         role="group"
         aria-roledescription="slide"
         aria-label={`Testimonial ${i + 1} of ${testimonials.length}`}
       >
-        <span class="absolute right-6 top-4 text-6xl font-bold leading-none text-white/5">
-          {String(i + 1).padStart(2, "0")}
-        </span>
-
         <blockquote class="relative z-10">
-          <p class="text-lg font-light leading-relaxed text-text-primary">
-            "{t.quote}"
+          <p class="text-2xl font-light leading-relaxed text-text-primary sm:text-3xl">
+            {t.quote}
           </p>
-          <footer class="mt-6">
-            <cite class="not-italic">
-              <span class="block font-semibold text-text-primary">{t.name}</span>
-              <span class="block text-sm text-text-secondary">{t.role}</span>
+          <footer class="mt-8">
+            <div class="h-1 w-12 rounded-full bg-gradient-to-r from-accent to-teal" />
+            <cite class="mt-4 block not-italic">
+              <span class="text-lg font-semibold text-white">{t.name}</span>
+              <span class="ml-2 text-sm text-text-secondary">{t.role}</span>
             </cite>
           </footer>
         </blockquote>
@@ -43,21 +43,20 @@ import { testimonials } from "../data/testimonials";
     ))}
   </div>
 
-  <!-- Navigation -->
   <div class="mt-8 flex items-center justify-between sm:justify-center sm:gap-8">
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-2">
       {testimonials.map((_, i) => (
         <button
-          class="group relative py-4"
+          class="group relative py-3"
           data-testimonial-dot={i}
           aria-label={`Go to testimonial ${i + 1}`}
         >
           <span
             class:list={[
-              "block h-px transition-all duration-500 ease-out",
+              "block h-0.5 rounded-full transition-all duration-500 ease-out",
               i === 0
-                ? "w-12 bg-text-primary"
-                : "w-6 bg-text-primary/20 group-hover:w-8 group-hover:bg-text-primary/40",
+                ? "w-10 bg-gradient-to-r from-accent to-teal"
+                : "w-5 bg-white/20 group-hover:w-7 group-hover:bg-white/40",
             ]}
           />
         </button>
@@ -68,14 +67,14 @@ import { testimonials } from "../data/testimonials";
     </span>
     <div class="flex items-center gap-1">
       <button
-        class="p-2 rounded-full text-text-primary/40 hover:text-text-primary hover:bg-text-primary/5 transition-all duration-300"
+        class="p-2 rounded-full text-white/30 hover:text-white hover:bg-white/5 transition-all duration-300"
         data-testimonial-prev
         aria-label="Previous testimonial"
       >
         <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
       </button>
       <button
-        class="p-2 rounded-full text-text-primary/40 hover:text-text-primary hover:bg-text-primary/5 transition-all duration-300"
+        class="p-2 rounded-full text-white/30 hover:text-white hover:bg-white/5 transition-all duration-300"
         data-testimonial-next
         aria-label="Next testimonial"
       >
@@ -86,50 +85,67 @@ import { testimonials } from "../data/testimonials";
 </section>
 
 <script>
-document.addEventListener("astro:page-load", () => {
-  const container = document.querySelector("[data-testimonial-container]") as HTMLElement | null;
-  const dots = document.querySelectorAll("[data-testimonial-dot]");
-  const counter = document.querySelector("[data-testimonial-counter]") as HTMLElement | null;
-  const prevBtn = document.querySelector("[data-testimonial-prev]");
-  const nextBtn = document.querySelector("[data-testimonial-next]");
+  document.addEventListener("astro:page-load", () => {
+    const slides = document.querySelectorAll("[data-testimonial-slide]");
+    const dots = document.querySelectorAll("[data-testimonial-dot]");
+    const counter = document.querySelector("[data-testimonial-counter]") as HTMLElement | null;
+    const prevBtn = document.querySelector("[data-testimonial-prev]");
+    const nextBtn = document.querySelector("[data-testimonial-next]");
 
-  if (!container || !counter) return;
+    if (!slides.length || !counter) return;
 
-  const cards = container.querySelectorAll("article");
-  const total = cards.length;
-  let active = 0;
+    const total = slides.length;
+    let active = 0;
 
-  function goTo(index: number) {
-    active = ((index % total) + total) % total;
-    cards[active].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    function goTo(index: number) {
+      active = ((index % total) + total) % total;
 
-    dots.forEach((dot, i) => {
-      const line = dot.querySelector("span");
-      if (!line) return;
-      if (i === active) {
-        line.className = "block h-px transition-all duration-500 ease-out w-12 bg-text-primary";
-      } else {
-        line.className = "block h-px transition-all duration-500 ease-out w-6 bg-text-primary/20 group-hover:w-8 group-hover:bg-text-primary/40";
-      }
+      slides.forEach((slide, i) => {
+        if (i === active) {
+          slide.classList.remove("opacity-0", "pointer-events-none");
+          slide.classList.add("opacity-100");
+        } else {
+          slide.classList.remove("opacity-100");
+          slide.classList.add("opacity-0", "pointer-events-none");
+        }
+      });
+
+      dots.forEach((dot, i) => {
+        const line = dot.querySelector("span");
+        if (!line) return;
+        if (i === active) {
+          line.className = "block h-0.5 rounded-full transition-all duration-500 ease-out w-10 bg-gradient-to-r from-accent to-teal";
+        } else {
+          line.className = "block h-0.5 rounded-full transition-all duration-500 ease-out w-5 bg-white/20 group-hover:w-7 group-hover:bg-white/40";
+        }
+      });
+
+      counter.textContent = `${String(active + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}`;
+    }
+
+    prevBtn?.addEventListener("click", () => goTo(active - 1));
+    nextBtn?.addEventListener("click", () => goTo(active + 1));
+    dots.forEach((dot) => {
+      dot.addEventListener("click", () => {
+        const i = Number((dot as HTMLElement).dataset.testimonialDot);
+        goTo(i);
+      });
     });
 
-    counter.textContent = `${String(active + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}`;
-  }
+    const section = slides[0]?.closest("section");
+    if (section) {
+      section.setAttribute("tabindex", "0");
+      section.addEventListener("keydown", (e: KeyboardEvent) => {
+        if (e.key === "ArrowRight") { e.preventDefault(); goTo(active + 1); }
+        if (e.key === "ArrowLeft") { e.preventDefault(); goTo(active - 1); }
+      });
+    }
 
-  prevBtn?.addEventListener("click", () => goTo(active - 1));
-  nextBtn?.addEventListener("click", () => goTo(active + 1));
-  dots.forEach((dot) => {
-    dot.addEventListener("click", () => {
-      const i = Number((dot as HTMLElement).dataset.testimonialDot);
-      goTo(i);
+    let interval = setInterval(() => goTo(active + 1), 6000);
+    const region = slides[0]?.closest("[role=region]");
+    region?.addEventListener("mouseenter", () => clearInterval(interval));
+    region?.addEventListener("mouseleave", () => {
+      interval = setInterval(() => goTo(active + 1), 6000);
     });
   });
-
-  // Keyboard navigation
-  container.setAttribute("tabindex", "0");
-  container.addEventListener("keydown", (e: KeyboardEvent) => {
-    if (e.key === "ArrowRight") { e.preventDefault(); goTo(active + 1); }
-    if (e.key === "ArrowLeft") { e.preventDefault(); goTo(active - 1); }
-  });
-});
 </script>

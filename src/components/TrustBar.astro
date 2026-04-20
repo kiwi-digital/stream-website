@@ -1,18 +1,62 @@
 ---
 const stats = [
-  { value: "500+", label: "Events Streamed" },
-  { value: "Since 2015", label: "Serving Hawkes Bay" },
-  { value: "50+", label: "Venues Trust Us" },
+  { value: 500, suffix: "+", label: "Events Streamed" },
+  { value: 2015, suffix: "", label: "Serving Hawkes Bay Since" },
+  { value: 50, suffix: "+", label: "Venues Trust Us" },
 ];
 ---
 
-<section class="border-y border-border bg-surface/50 py-12">
-  <div class="mx-auto flex max-w-4xl flex-col items-center justify-center gap-8 px-6 sm:flex-row sm:gap-16">
-    {stats.map((stat) => (
-      <div class="flex flex-col items-center text-center">
-        <span class="text-3xl font-bold text-accent">{stat.value}</span>
-        <span class="mt-1 text-sm text-text-secondary">{stat.label}</span>
-      </div>
+<section class="reveal border-y border-border bg-surface/50 py-16">
+  <div class="mx-auto flex max-w-4xl flex-col items-center justify-center gap-10 px-6 sm:flex-row sm:gap-0">
+    {stats.map((stat, i) => (
+      <>
+        <div class="flex flex-col items-center text-center sm:flex-1">
+          <span class="text-5xl font-bold text-accent" data-count-target={stat.value} data-count-suffix={stat.suffix}>
+            0{stat.suffix}
+          </span>
+          <span class="mt-2 text-sm font-medium uppercase tracking-wider text-text-secondary">
+            {stat.label}
+          </span>
+        </div>
+        {i < stats.length - 1 && (
+          <div class="hidden h-12 w-px sm:block" style="background: linear-gradient(to bottom, transparent, rgba(14,165,233,0.3), transparent);"></div>
+        )}
+      </>
     ))}
   </div>
 </section>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const counters = document.querySelectorAll("[data-count-target]");
+    if (!counters.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target as HTMLElement;
+          const target = parseInt(el.dataset.countTarget || "0", 10);
+          const suffix = el.dataset.countSuffix || "";
+          const duration = 2000;
+          const start = performance.now();
+
+          function tick(now: number) {
+            const elapsed = now - start;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const current = Math.round(eased * target);
+            el.textContent = current + suffix;
+            if (progress < 1) requestAnimationFrame(tick);
+          }
+
+          requestAnimationFrame(tick);
+          observer.unobserve(el);
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    counters.forEach((el) => observer.observe(el));
+  });
+</script>

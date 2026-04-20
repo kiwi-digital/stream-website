@@ -1,42 +1,60 @@
 ---
+const words = ["Weddings", "Funerals", "School Events", "Church Services"];
 ---
 
-<section class="relative flex min-h-screen items-center justify-center overflow-hidden px-6 pt-24">
-  <!-- Grid background -->
-  <div
-    class="absolute inset-0 -z-10 h-[600px] w-full opacity-80"
-    style="background-image: linear-gradient(to right, rgba(30,58,95,0.3) 1px, transparent 1px), linear-gradient(to bottom, rgba(30,58,95,0.3) 1px, transparent 1px); background-size: 4rem 4rem; mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, #000 70%, transparent 110%);"
-  ></div>
+<section class="film-grain relative flex min-h-screen items-center justify-center overflow-hidden">
+  <!-- Background stock photo -->
+  <img
+    src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=1920&q=80"
+    alt=""
+    role="presentation"
+    class="absolute inset-0 h-full w-full object-cover"
+    loading="eager"
+    decoding="async"
+  />
 
-  <!-- Radial glow at bottom -->
-  <div
-    class="absolute bottom-0 left-1/2 h-[400px] w-[800px] -translate-x-1/2 translate-y-1/2 rounded-full opacity-30"
-    style="background: radial-gradient(closest-side, rgba(14,165,233,0.4), transparent);"
-  ></div>
+  <!-- Dark overlay -->
+  <div class="absolute inset-0 bg-black/85"></div>
 
-  <div class="relative z-10 mx-auto max-w-3xl text-center">
-    <span class="inline-block rounded-full border border-border bg-surface/50 px-5 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary">
+  <!-- Content -->
+  <div class="relative z-10 mx-auto max-w-4xl px-6 text-center">
+    <!-- Eyebrow -->
+    <span class="inline-block rounded-full border border-white/10 bg-white/5 px-5 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-text-secondary backdrop-blur-sm">
       Hawkes Bay's AV & Streaming Experts
     </span>
 
-    <h1 class="mt-8 text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl" style="letter-spacing: -0.015em;">
-      Professional AV & Live Streaming for Your Most Important Moments
+    <!-- Headline -->
+    <h1 class="mt-8 text-5xl font-bold leading-[1.1] text-white sm:text-6xl lg:text-7xl" style="letter-spacing: -0.03em;">
+      Every Moment,<br />
+      <span class="gradient-text">Broadcast Beautifully</span>
     </h1>
 
+    <!-- Animated word rotation subtitle -->
     <p class="mt-6 text-lg text-text-secondary sm:text-xl">
-      From weddings to funerals, school events to church services — we make sure every moment is captured and shared professionally.
+      Professional AV & streaming for{" "}
+      <span class="relative inline-block h-[1.4em] w-[10ch] overflow-hidden align-bottom sm:w-[14ch]" data-word-rotate>
+        {words.map((word, i) => (
+          <span
+            class="absolute left-0 top-0 font-semibold text-white"
+            style={`animation: word-rotate 8s ease-in-out infinite; animation-delay: ${i * 2}s;${i !== 0 ? " opacity: 0;" : ""}`}
+          >
+            {word}
+          </span>
+        ))}
+      </span>
     </p>
 
+    <!-- CTAs -->
     <div class="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
       <a
         href="/contact"
-        class="rounded-full bg-accent px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-accent/25 transition-all hover:bg-accent-hover hover:shadow-accent-hover/25"
+        class="glow-pulse rounded-full bg-accent px-8 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-accent-hover"
       >
         Get a Quote
       </a>
       <a
         href="#services"
-        class="rounded-full border border-accent/30 px-8 py-3 text-sm font-semibold text-text-secondary transition-all hover:border-accent/60 hover:text-white"
+        class="rounded-full border border-accent/30 px-8 py-3.5 text-sm font-semibold text-text-secondary transition-all hover:border-accent/60 hover:text-white"
       >
         Our Services
       </a>
